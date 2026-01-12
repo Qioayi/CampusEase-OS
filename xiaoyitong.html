@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>校易通 - 智能教室预约系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+        }
+        
+        :root {
+            --primary: #1e88e5;
+            --primary-dark: #1565c0;
+            --secondary: #ff9800;
+            --light: #f5f5f5;
+            --dark: #333;
+            --success: #4caf50;
+            --warning: #ffc107;
+            --danger: #f44336;
+            --gray: #757575;
+            --white: #ffffff;
+            --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: var(--dark);
+            line-height: 1.6;
+            min-height: 100vh;
+            margin: 0;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* 登录页面样式 */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        }
+        
+        .login-box {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 400px;
+            padding: 2.5rem;
+        }
+        
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-logo i {
+            font-size: 3.5rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+        
+        .login-logo h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+        }
+        
+        .login-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .login-form label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark);
+        }
+        
+        .login-form .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+        
+        .login-form .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(30, 136, 229, 0.2);
+        }
+        
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .login-btn:hover {
+            background-color: #e68900;
+        }
+        
+        .login-info {
+            margin-top: 1.5rem;
+            text-align: center;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        
+        .user-types {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .user-type {
+            background-color: var(--light);
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .user-type i {
+            color: var(--primary);
+        }
+        
+        /* 隐藏主系统界面 */
+        .main-system {
+            display: none;
+        }
+        
+        /* 导航栏样式 */
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .logo i {
+            font-size: 1.8rem;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 5px 10px;
+            border-radius: 4px;
+        }
+        
+        .nav-links a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .user-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+        
+        .btn {
+            padding: 8px 16px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #e68900;
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            border: 1px solid white;
+            color: white;
+        }
+        
+        .btn-outline:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            font-weight: 500;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        .logout-btn {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin-left: 10px;
+        }
+        
+        .logout-btn:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        /* 主要内容区域 */
+        .hero {
+            background: linear-gradient(rgba(30, 136, 229, 0.9), rgba(21, 101, 192, 0.9)), url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 5rem 0;
+            text-align: center;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2rem;
+        }
+        
+        .features {
+            padding: 4rem 0;
+            background-color: var(--white);
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary);
+        }
+        
+        .section-title h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+        }
+        
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .feature-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .card {
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 2rem;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        /* 功能演示区域 */
+        .demo-section {
+            padding: 4rem 0;
+            background-color: var(--light);
+        }
+        
+        .demo-container {
+            display: flex;
+            gap: 2rem;
+            align-items: flex-start;
+        }
+        
+        .demo-sidebar {
+            flex: 1;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+        }
+        
+        .demo-main {
+            flex: 2;
+            background-color: var(--white);
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            padding: 1.5rem;
+        }
+        
+        .user-type-selector {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .user-type-btn {
+            padding: 1rem;
+            background-color: var(--light);
+            border: none;
+            border-radius: 4px;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-type-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .user-type-btn i {
+            font-size: 1.2rem;
+        }
+        
+        .demo-content {
+            min-height: 400px;
+        }
+        
+        .demo-screen {
+            display: none;
+        }
+        
+        .demo-screen.active {
+            display: block;
+        }
+        
+        .screen-title {
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #eee;
+            color: var(--primary);
+        }
+        
+        .resource-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .resource-card {
+            background-color: var(--light);
+            border-radius: 6px;
+            padding: 1rem;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .resource-card h4 {
+            margin-bottom: 0.5rem;
+            color: var(--primary);
+        }
+        
+        .resource-card p {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 0.5rem;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        
+        .status-available {
+            background-color: #e8f5e9;
+            color: var(--success);
+        }
+        
+        .status-pending {
+            background-color: #fff8e1;
+            color: var(--warning);
+        }
+        
+        .status-rejected {
+            background-color: #ffebee;
+            color: var(--danger);
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        .reservation-summary {
+            background-color: var(--light);
+            border-radius: 6px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .reservation-summary h4 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        .reservation-summary p {
+            margin-bottom: 0.5rem;
+        }
+        
+        .reservation-summary .highlight {
+            font-weight: 600;
+            color: var(--primary);
+        }
+        
+        /* 系统环境区域 */
+        .environment {
+            padding: 4rem 0;
+            background-color: var(--white);
+        }
+        
+        .env-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .env-card {
+            background-color: var(--light);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .env-card i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .env-card h3 {
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+        
+        /* 页脚 */
+        footer {
+            background-color: var(--dark);
+            color: white;
+            padding: 3rem 0 1.5rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            color: var(--secondary);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-links a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: var(--secondary);
+        }
+        
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        /* 审批结果样式 */
+        .approval-message {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            text-align: center;
+            font-weight: 500;
+            animation: fadeOut 3s forwards;
+            opacity: 1;
+        }
+        
+        .approval-success {
+            background-color: #e8f5e9;
+            color: var(--success);
+            border-left: 4px solid var(--success);
+        }
+        
+        .approval-rejected {
+            background-color: #ffebee;
+            color: var(--danger);
+            border-left: 4px solid var(--danger);
+        }
+        
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; display: none; }
+        }
+        
+        .action-buttons {
+            margin-top: 10px;
+            display: flex;
+            gap: 5px;
+        }
+        
+        .btn-approve {
+            padding: 5px 10px;
+            background-color: var(--success);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-approve:hover {
+            background-color: #3d8b40;
+        }
+        
+        .btn-reject {
+            padding: 5px 10px;
+            background-color: var(--danger);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .btn-reject:hover {
+            background-color: #d32f2f;
+        }
+        
+        .login-error {
+            color: var(--danger);
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            display: none;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .nav-links {
+                gap: 1rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .demo-container {
+                flex-direction: column;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .user-types {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 登录页面 -->
+    <div class="login-container" id="login-page">
+        <div class="login-box">
+            <div class="login-logo">
+                <i class="fas fa-school"></i>
+                <h1>校易通智能教室预约系统</h1>
+            </div>
+            <form class="login-form" id="login-form">
+                <div class="form-group">
+                    <label for="username">用户名</label>
+                    <input type="text" id="username" class="form-control" placeholder="请输入用户名" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">密码</label>
+                    <input type="password" id="password" class="form-control" placeholder="请输入密码" required>
+                </div>
+                <div class="login-error" id="login-error">用户名或密码错误，请重试！</div>
+                <button type="submit" class="login-btn">
+                    <i class="fas fa-sign-in-alt"></i>
+                    登录系统
+                </button>
+            </form>
+            <div class="login-info">
+                <p>测试账号：</p>
+                <div class="user-types">
+                    <div class="user-type">
+                        <i class="fas fa-user-graduate"></i>
+                        <span>学生：张三 / 1</span>
+                    </div>
+                    <div class="user-type">
+                        <i class="fas fa-user-tie"></i>
+                        <span>管理员：李四 / 1</span>
+                    </div>
+                    <div class="user-type">
+                        <i class="fas fa-users"></i>
+                        <span>学生会：王五 / 1</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主系统界面（初始隐藏） -->
+    <div class="main-system" id="main-system">
+        <!-- 导航栏 -->
+        <header>
+            <div class="container">
+                <div class="navbar">
+                    <div class="logo">
+                        <i class="fas fa-school"></i>
+                        <span>校易通</span>
+                    </div>
+                    <ul class="nav-links">
+                        <li><a href="#features">系统功能</a></li>
+                        <li><a href="#demo">功能演示</a></li>
+                        <li><a href="#environment">运行环境</a></li>
+                        <li><a href="#about">关于我们</a></li>
+                    </ul>
+                    <div class="user-actions">
+                        <div class="user-info" id="current-user-info">
+                            <!-- 这里会动态显示用户信息 -->
+                        </div>
+                        <button class="logout-btn" id="logout-btn">
+                            <i class="fas fa-sign-out-alt"></i> 退出
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- 主横幅 -->
+        <section class="hero">
+            <div class="container">
+                <h1>校易通智能教室预约系统</h1>
+                <p>全时段自动化预约，提升校园资源利用效率，简化教室预约流程，让学习空间管理更智能、更高效。</p>
+                <button class="btn btn-primary"><i class="fas fa-play-circle"></i> 立即体验</button>
+            </div>
+        </section>
+
+        <!-- 系统功能 -->
+        <section class="features" id="features">
+            <div class="container">
+                <div class="section-title">
+                    <h2>系统核心功能</h2>
+                    <p>校易通系统提供全面的教室预约管理解决方案，满足学生和管理员的不同需求</p>
+                </div>
+                <div class="feature-cards">
+                    <div class="card">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3>智能预约</h3>
+                        <p>学生可实时查看空余教室，提交预约申请，系统自动处理并返回结果</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-tasks"></i>
+                        <h3>预约审核</h3>
+                        <p>管理员可查看待审核预约，进行通过或驳回操作，确保资源合理使用</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-chart-bar"></i>
+                        <h3>统计分析</h3>
+                        <p>提供资源使用率、预约成功率等统计信息，辅助校园管理决策</p>
+                    </div>
+                    <div class="card">
+                        <i class="fas fa-star"></i>
+                        <h3>优先级设置</h3>
+                        <p>支持学生会等组织的优先预约规则，满足学校任务紧急调度需求</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 功能演示 -->
+        <section class="demo-section" id="demo">
+            <div class="container">
+                <div class="section-title">
+                    <h2>系统功能演示</h2>
+                    <p>体验校易通系统的核心功能，了解学生和管理员的不同操作界面</p>
+                </div>
+                <div class="demo-container">
+                    <div class="demo-sidebar">
+                        <h3 class="screen-title">用户角色</h3>
+                        <div class="user-type-selector" id="user-type-selector">
+                            <button class="user-type-btn active" data-target="student-demo" id="student-btn">
+                                <i class="fas fa-user-graduate"></i>
+                                <span>学生用户</span>
+                            </button>
+                            <button class="user-type-btn" data-target="admin-demo" id="admin-btn">
+                                <i class="fas fa-user-tie"></i>
+                                <span>管理员用户</span>
+                            </button>
+                            <button class="user-type-btn" data-target="union-demo" id="union-btn">
+                                <i class="fas fa-users"></i>
+                                <span>学生会用户</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="demo-main">
+                        <div class="demo-content">
+                            <!-- 学生用户演示 -->
+                            <div class="demo-screen active" id="student-demo">
+                                <h3 class="screen-title">学生用户功能演示</h3>
+                                <div class="resource-list">
+                                    <div class="resource-card">
+                                        <h4>教学楼A-201</h4>
+                                        <p>多媒体教室 | 容纳60人</p>
+                                        <p>今日空余时段: 10:00-12:00, 14:00-16:00</p>
+                                        <span class="status-badge status-available">可预约</span>
+                                    </div>
+                                    <div class="resource-card">
+                                        <h4>实验楼B-105</h4>
+                                        <p>计算机实验室 | 容纳40人</p>
+                                        <p>今日空余时段: 09:00-11:00, 15:00-17:00</p>
+                                        <span class="status-badge status-available">可预约</span>
+                                    </div>
+                                    <div class="resource-card">
+                                        <h4>艺术楼C-302</h4>
+                                        <p>美术教室 | 容纳30人</p>
+                                        <p>今日空余时段: 13:00-15:00</p>
+                                        <span class="status-badge status-available">可预约</span>
+                                    </div>
+                                </div>
+                                
+                                <h4>提交预约申请</h4>
+                                <div class="form-group">
+                                    <label for="resource-select">选择教室/实验室</label>
+                                    <select id="resource-select" class="form-control">
+                                        <option value="">-- 请选择 --</option>
+                                        <option value="A-201">教学楼A-201（多媒体教室）</option>
+                                        <option value="B-105">实验楼B-105（计算机实验室）</option>
+                                        <option value="C-302">艺术楼C-302（美术教室）</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="reservation-date">预约日期</label>
+                                        <input type="date" id="reservation-date" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="reservation-time">预约时段</label>
+                                        <select id="reservation-time" class="form-control">
+                                            <option value="">-- 请选择 --</option>
+                                            <option value="08:00-10:00">08:00-10:00</option>
+                                            <option value="10:00-12:00">10:00-12:00</option>
+                                            <option value="14:00-16:00">14:00-16:00</option>
+                                            <option value="16:00-18:00">16:00-18:00</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="purpose">使用目的</label>
+                                    <textarea id="purpose" class="form-control" rows="3" placeholder="请简要描述使用教室的目的..."></textarea>
+                                </div>
+                                <button class="btn btn-primary"><i class="fas fa-paper-plane"></i> 提交预约申请</button>
+                            </div>
+                            
+                            <!-- 管理员用户演示 -->
+                            <div class="demo-screen" id="admin-demo">
+                                <h3 class="screen-title">管理员用户功能演示</h3>
+                                
+                                <!-- 审批结果消息容器 -->
+                                <div id="approval-messages"></div>
+                                
+                                <h4>待审核预约</h4>
+                                <div class="resource-list" id="pending-approvals">
+                                    <div class="resource-card" id="approval-1" data-id="1">
+                                        <h4>张同学 - 教学楼A-201</h4>
+                                        <p>预约时间: 2023-11-15 10:00-12:00</p>
+                                        <p>使用目的: 小组讨论会</p>
+                                        <div class="action-buttons">
+                                            <button class="btn-approve" onclick="approveReservation(1)">通过</button>
+                                            <button class="btn-reject" onclick="rejectReservation(1)">驳回</button>
+                                        </div>
+                                    </div>
+                                    <div class="resource-card" id="approval-2" data-id="2">
+                                        <h4>李同学 - 实验楼B-105</h4>
+                                        <p>预约时间: 2023-11-16 14:00-16:00</p>
+                                        <p>使用目的: 编程实践课</p>
+                                        <div class="action-buttons">
+                                            <button class="btn-approve" onclick="approveReservation(2)">通过</button>
+                                            <button class="btn-reject" onclick="rejectReservation(2)">驳回</button>
+                                        </div>
+                                    </div>
+                                    <div class="resource-card" id="approval-3" data-id="3">
+                                        <h4>王同学 - 艺术楼C-302</h4>
+                                        <p>预约时间: 2023-11-17 13:00-15:00</p>
+                                        <p>使用目的: 美术作品创作</p>
+                                        <div class="action-buttons">
+                                            <button class="btn-approve" onclick="approveReservation(3)">通过</button>
+                                            <button class="btn-reject" onclick="rejectReservation(3)">驳回</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <h4>资源管理</h4>
+                                <div class="form-group">
+                                    <label for="resource-name">教室/实验室名称</label>
+                                    <input type="text" id="resource-name" class="form-control" placeholder="例如: 教学楼A-201">
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="resource-type">资源类型</label>
+                                        <select id="resource-type" class="form-control">
+                                            <option value="">-- 请选择 --</option>
+                                            <option value="classroom">普通教室</option>
+                                            <option value="lab">实验室</option>
+                                            <option value="multimedia">多媒体教室</option>
+                                            <option value="special">专用教室</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="capacity">容纳人数</label>
+                                        <input type="number" id="capacity" class="form-control" placeholder="例如: 60">
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary"><i class="fas fa-plus-circle"></i> 添加资源</button>
+                            </div>
+                            
+                            <!-- 学生会用户演示 -->
+                            <div class="demo-screen" id="union-demo">
+                                <h3 class="screen-title">学生会用户功能演示</h3>
+                                <div class="reservation-summary">
+                                    <h4><i class="fas fa-crown"></i> 优先预约权限</h4>
+                                    <p>作为学生会用户，您享有<strong class="highlight">优先预约权限</strong>，可以在普通学生预约前提前预约专用资源。</p>
+                                </div>
+                                
+                                <h4>学生会专区资源</h4>
+                                <div class="resource-list">
+                                    <div class="resource-card">
+                                        <h4>学生活动中心-101</h4>
+                                        <p>多功能厅 | 容纳100人</p>
+                                        <p>专供学生会活动使用</p>
+                                        <span class="status-badge status-available">可预约</span>
+                                    </div>
+                                    <div class="resource-card">
+                                        <h4>学生会办公室</h4>
+                                        <p>会议空间 | 容纳20人</p>
+                                        <p>日常办公与会议</p>
+                                        <span class="status-badge status-available">可预约</span>
+                                    </div>
+                                </div>
+                                
+                                <h4>提交优先预约</h4>
+                                <div class="form-group">
+                                    <label for="union-resource">选择专区资源</label>
+                                    <select id="union-resource" class="form-control">
+                                        <option value="">-- 请选择 --</option>
+                                        <option value="activity-center">学生活动中心-101</option>
+                                        <option value="union-office">学生会办公室</option>
+                                    </select>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="union-date">预约日期</label>
+                                        <input type="date" id="union-date" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="union-time">预约时段</label>
+                                        <select id="union-time" class="form-control">
+                                            <option value="">-- 请选择 --</option>
+                                            <option value="08:00-10:00">08:00-10:00</option>
+                                            <option value="10:00-12:00">10:00-12:00</option>
+                                            <option value="14:00-16:00">14:00-16:00</option>
+                                            <option value="16:00-18:00">16:00-18:00</option>
+                                            <option value="18:00-20:00">18:00-20:00</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="union-purpose">活动内容</label>
+                                    <textarea id="union-purpose" class="form-control" rows="3" placeholder="请描述活动内容..."></textarea>
+                                </div>
+                                <button class="btn btn-primary"><i class="fas fa-star"></i> 提交优先预约</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 系统环境 -->
+        <section class="environment" id="environment">
+            <div class="container">
+                <div class="section-title">
+                    <h2>系统运行环境</h2>
+                    <p>校易通系统基于稳定可靠的技术架构，确保系统高性能和高可用性</p>
+                </div>
+                <div class="env-cards">
+                    <div class="env-card">
+                        <i class="fab fa-weixin"></i>
+                        <h3>微信小程序</h3>
+                        <p>学生端基于微信小程序开发，无需下载安装，使用便捷</p>
+                    </div>
+                    <div class="env-card">
+                        <i class="fab fa-linux"></i>
+                        <h3>Linux服务器</h3>
+                        <p>后端服务运行于Linux系统，稳定高效</p>
+                    </div>
+                    <div class="env-card">
+                        <i class="fas fa-database"></i>
+                        <h3>MySQL数据库</h3>
+                        <p>采用MySQL数据库，确保数据安全与一致性</p>
+                    </div>
+                    <div class="env-card">
+                        <i class="fas fa-bolt"></i>
+                        <h3>高性能架构</h3>
+                        <p>支持≥1000并发用户，系统响应时间&lt;3秒</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 页脚 -->
+        <footer>
+            <div class="container">
+                <div class="footer-content">
+                    <div class="footer-column">
+                        <h3>校易通</h3>
+                        <p>智能教室预约系统，提升校园资源利用效率，简化预约流程。</p>
+                    </div>
+                    <div class="footer-column">
+                        <h3>快速链接</h3>
+                        <ul class="footer-links">
+                            <li><a href="#features">系统功能</a></li>
+                            <li><a href="#demo">功能演示</a></li>
+                            <li><a href="#environment">运行环境</a></li>
+                            <li><a href="#about">关于我们</a></li>
+                        </ul>
+                    </div>
+                   
